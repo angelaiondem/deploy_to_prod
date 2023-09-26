@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  namespace: ${KUBE_NAMESPACE}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-app-container
+          image: ${ECR_REPO_URI}:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: APP_ENV
+              value: production
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "0.5"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
